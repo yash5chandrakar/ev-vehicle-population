@@ -256,7 +256,7 @@ const Dashboard = () => {
             <h3 className="text-center text-white m-3 p-3 text-decoration-underline" >Electric Vehicle Data Representation</h3>
             <h5 className="mx-4 text-white d-flex justify-content-between">
                 <div>1. Tablular Data</div>
-                <div>Total Records: 500</div>
+                <div>Total Records: {csvData?.length}</div>
             </h5>
             <div className="card d-flex justify-content-center align-items-center" >
                 {loading ? (
