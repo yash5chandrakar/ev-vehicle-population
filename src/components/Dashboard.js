@@ -177,7 +177,7 @@ const Dashboard = () => {
     };
 
     const getInsights = () => {
-        if(csvData?.length===0){
+        if (csvData?.length === 0) {
             return []
         }
 
@@ -194,8 +194,8 @@ const Dashboard = () => {
                 return acc;
             }, []);
 
-            let mostCommonValue = findObjectWithHighestValue(fieldValues,"value")
-            let mostUncommonValue = findObjectWithLowestValue(fieldValues,"value")
+            let mostCommonValue = findObjectWithHighestValue(fieldValues, "value")
+            let mostUncommonValue = findObjectWithLowestValue(fieldValues, "value")
 
             allInsights.push(
                 <>
@@ -235,7 +235,7 @@ const Dashboard = () => {
         Papa.parse(text, {
             header: true,
             complete: (results) => {
-                setCsvData(results?.data?.slice(0, 500));
+                setCsvData(results?.data);
                 setLoading(false)
             },
             error: (error) => {
@@ -270,11 +270,6 @@ const Dashboard = () => {
                         columns={columns}
                         pagination={true}
                         rowClassName="table-row"
-                    // footer={() => (
-                    //     <div style={{ textAlign: 'left' }}>
-                    //         Total Records: 500
-                    //     </div>
-                    // )}
                     />
                 )}
             </div>
@@ -300,55 +295,81 @@ const Dashboard = () => {
                 <Col md={6} className="mb-4">
                     <ResponsiveContainer width="100%" height={400}
                     >
-                        <PieChart>
-                            <Tooltip />
-                            {/* <Legend /> */}
-                            <Pie
-                                data={pieChartData}
-                                dataKey="value"
-                                nameKey="name"
-                                cx="50%"
-                                cy="50%"
-                                outerRadius={150}
-                            >
-                                {pieChartData.map((entry, index) => (
-                                    <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
-                                ))}
-                            </Pie>
-                        </PieChart>
+                        {loading ? (
+                            <div className="text-center">
+                                <Spinner className="m-3 p-3"></Spinner>
+                            </div>
+                        ) : (
+                            <PieChart>
+                                <Tooltip />
+                                {/* <Legend /> */}
+                                <Pie
+                                    data={pieChartData}
+                                    dataKey="value"
+                                    nameKey="name"
+                                    cx="50%"
+                                    cy="50%"
+                                    outerRadius={150}
+                                >
+                                    {pieChartData.map((entry, index) => (
+                                        <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
+                                    ))}
+                                </Pie>
+                            </PieChart>
+                        )}
                         <h5 className="text-center text-white">Pie Chart</h5>
                     </ResponsiveContainer>
                 </Col>
                 <Col md={6} className="mb-4">
                     <ResponsiveContainer width="100%" height={400}>
-                        <BarChart data={pieChartData}>
-                            <XAxis dataKey="name" />
-                            <YAxis />
-                            <Tooltip />
-                            <Bar dataKey="value" fill="#8884d8" />
-                        </BarChart>
+                        {loading ? (
+                            <div className="text-center">
+                                <Spinner className="m-3 p-3"></Spinner>
+                            </div>
+                        ) : (
+                            <BarChart data={pieChartData}>
+                                <XAxis dataKey="name" />
+                                <YAxis />
+                                <Tooltip />
+                                <Bar dataKey="value" fill="#8884d8" />
+                            </BarChart>
+                        )}
                         <h5 className="text-center text-white">Bar Chart</h5>
                     </ResponsiveContainer>
                 </Col>
                 <Col md={6} className="mb-4">
                     <ResponsiveContainer width="100%" height={400}>
-                        <LineChart data={pieChartData}>
-                            <XAxis dataKey="name" />
-                            <YAxis />
-                            <Tooltip />
-                            <Line type="monotone" dataKey="value" stroke="#8884d8" />
-                        </LineChart>
+                        {loading ? (
+                            <div className="text-center">
+                                <Spinner className="m-3 p-3"></Spinner>
+                            </div>
+                        ) : (
+                            <LineChart data={pieChartData}>
+                                <XAxis dataKey="name" />
+                                <YAxis />
+                                <Tooltip />
+                                <Line type="monotone" dataKey="value" stroke="#8884d8" />
+                            </LineChart>
+                        )}
+
                         <h5 className="text-center text-white">Line Chart</h5>
                     </ResponsiveContainer>
                 </Col>
                 <Col md={6} className="mb-4">
                     <ResponsiveContainer width="100%" height={400}>
-                        <AreaChart data={pieChartData}>
-                            <XAxis dataKey="name" />
-                            <YAxis />
-                            <Tooltip />
-                            <Area type="monotone" dataKey="value" stroke="#8884d8" fillOpacity={0.3} fill="#8884d8" />
-                        </AreaChart>
+                        {loading ? (
+                            <div className="text-center">
+                                <Spinner className="m-3 p-3"></Spinner>
+                            </div>
+                        ) : (
+                            <AreaChart data={pieChartData}>
+                                <XAxis dataKey="name" />
+                                <YAxis />
+                                <Tooltip />
+                                <Area type="monotone" dataKey="value" stroke="#8884d8" fillOpacity={0.3} fill="#8884d8" />
+                            </AreaChart>
+                        )}
+
                         <h5 className="text-center text-white">Area Chart</h5>
                     </ResponsiveContainer>
                 </Col>
@@ -363,10 +384,17 @@ const Dashboard = () => {
                 </Col> */}
                 <Col md={6} className="mb-4">
                     <ResponsiveContainer width="100%" height={400}>
-                        <FunnelChart>
-                            <Funnel data={pieChartData} dataKey="value" name={selectedField} stroke="#8884d8" fill="#8884d8" />
-                            <Tooltip />
-                        </FunnelChart>
+                        {loading ? (
+                            <div className="text-center">
+                                <Spinner className="m-3 p-3"></Spinner>
+                            </div>
+                        ) : (
+                            <FunnelChart>
+                                <Funnel data={pieChartData} dataKey="value" name={selectedField} stroke="#8884d8" fill="#8884d8" />
+                                <Tooltip />
+                            </FunnelChart>
+                        )}
+
                         <h5 className="text-center text-white">Funnel Chart</h5>
                     </ResponsiveContainer>
                 </Col>
@@ -374,16 +402,25 @@ const Dashboard = () => {
             <h5 className="mx-4 text-white mt-5">
                 <div className="mb-4">3. Insights</div>
                 <Row>
-                    {insights?.map((insight, index) => (
-                        <Col md={5} className="insight-card ">
-                            <div className="mb-3 text-center text-decoration-underline">{insight?.label}</div>
-                            <ul>
-                                {insight?.insights?.map((insight, ind) => (
-                                    <li key={ind}>{insight}</li>
-                                ))}
-                            </ul>
-                        </Col>
-                    ))}
+                    {loading ? (
+                        <div className="text-center">
+                            <Spinner className="m-3 p-3"></Spinner>
+                        </div>
+                    ) : (
+                        <>
+                            {insights?.map((insight, index) => (
+                                <Col md={5} className="insight-card ">
+                                    <div className="mb-3 text-center text-decoration-underline">{insight?.label}</div>
+                                    <ul>
+                                        {insight?.insights?.map((insight, ind) => (
+                                            <li key={ind}>{insight}</li>
+                                        ))}
+                                    </ul>
+                                </Col>
+                            ))}
+                        </>
+                    )}
+
                 </Row>
             </h5>
         </div>
